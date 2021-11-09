@@ -1,23 +1,9 @@
-java_import(
-    name = "deps",
-    jars = [],
-    exports = [
-        "@maven//:org_springframework_boot_spring_boot_starter_web",
-        # dependencies below are transitive
-        # build fails if you remove them
-        "@maven//:org_springframework_boot_spring_boot",
-        "@maven//:org_springframework_boot_spring_boot_autoconfigure",
-    ],
+load("//:defs.bzl", "java_genrule", "java_nativerule")
+
+java_genrule(
+    name = "genrule"
 )
 
-java_library(
-    name = "lib",
-    srcs = ["Main.java"],
-    deps = [":deps"],
-)
-
-java_binary(
-    name = "jar",
-    main_class = "showcase.Main",
-    runtime_deps = [":lib"],
+java_nativerule(
+    name = "nativerule"
 )

@@ -4,10 +4,10 @@ def _impl(ctx):
     executable = ctx.actions.declare_file(ctx.label.name)
     ctx.actions.write(
         output = executable,
-        content = "external/local_jdk/bin/java -version",
+        content = ctx.var["JAVA"] + " -version",
     )
     runfiles = ctx.runfiles(
-        files = ctx.toolchains["@bazel_tools//tools/jdk:current_java_runtime"].default.files.to_list(),
+        files = ctx.toolchains["@bazel_tools//tools/jdk:runtime_toolchain_type"].java_runtime.files.to_list(),
     )
     return [
         DefaultInfo(
@@ -20,7 +20,7 @@ java_nativerule = rule(
     implementation = _impl,
     attrs = {},
     executable = True,
-    toolchains = ["@bazel_tools//tools/jdk:current_java_runtime"],
+    toolchains = ["@bazel_tools//tools/jdk:runtime_toolchain_type"],
 )
 
 def java_genrule(name):
